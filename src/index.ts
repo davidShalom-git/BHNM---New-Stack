@@ -2,6 +2,7 @@ import 'dotenv/config'
 import {Hono} from 'hono'
 import {cors} from 'hono/cors'
 import {PrismaClient} from '@prisma/client'
+import auth from './routers/User'
 
 
 const prisma = new PrismaClient()
@@ -16,6 +17,8 @@ prisma.$connect().then(()=> {
 const app = new Hono()
 
 app.use('*',cors())
+
+app.route('/api/auth',auth)
 
 export default {
   port: 1700,
