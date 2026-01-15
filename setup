@@ -1,0 +1,4 @@
+bun create hono@latest edu-smart-api
+cd edu-smart-api
+bun add mongoose jsonwebtoken bcryptjs
+bun run dev
