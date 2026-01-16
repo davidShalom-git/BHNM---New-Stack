@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken'
+import { AuthResponse } from "../types/auth.details";
 
 
 const prisma = new PrismaClient();
 
-export const registerUser = async (username: string, email: string, password: string) => {
+export const registerUser = async (username: string, email: string, password: string):Promise<AuthResponse> => {
 
     try {
         const existingUser = await prisma.user.findUnique({
@@ -13,7 +14,7 @@ export const registerUser = async (username: string, email: string, password: st
         })
 
         if (existingUser) {
-            return { message: 'User already exists' }
+            return { message: 'User already exists',status:400 }
         }
 
         const hashPassword = await bcrypt.hash(String(password), 10)
@@ -31,11 +32,11 @@ export const registerUser = async (username: string, email: string, password: st
         return { message: "User Register Successfully", token ,status:201}
 
     } catch (error) {
-        return { message: "Internal Server Error" }
+        return { message: "Internal Server Error" ,status:500}
     }
 }
 
-export const loginUser = async(email:string,password:string) => {
+export const loginUser = async(email:string,password:string):Promise<AuthResponse> => {
     try {
 
         const user = await prisma.user.findUnique({
@@ -43,14 +44,14 @@ export const loginUser = async(email:string,password:string) => {
         })
 
         if(!user){
-            return {message: "User not found"}
+            return {message: "User not found",status:404}
         }
 
         const isMatchPassword = await bcrypt.compare(password,user.password)   
         
         
         if(!isMatchPassword){
-            return {message: "Password is incorrect"}
+            return {message: "Password is incorrect",status:404}
         } 
 
         const token = jwt.sign({id:user.id},String(process.env.JWT_SECRET), {expiresIn: "7d"})
@@ -59,7 +60,7 @@ export const loginUser = async(email:string,password:string) => {
 
 
     } catch (error) {
-        return {message: "Internal Server Error"}
+        return {message: "Internal Server Error",status:500}
     }
 }
 
