@@ -1,12 +1,14 @@
+import {Context} from 'hono'
 import * as UserDetails from '../services/User'
+import { LoginInput, RegisterInput } from '../types/auth.details'
 
 
 
 
-export const register = async (c:any) => {
+export const register = async (c:Context) => {
     try {
 
-        const { username, email, password } = await c.req.json()
+        const { username, email, password } :RegisterInput = await c.req.json()
 
         if (!username || !email || !password) {
             return c.json({ message: "All Fields are required" }, 400)
@@ -21,10 +23,10 @@ export const register = async (c:any) => {
 
 }
 
-export const login = async (c: any) => {
+export const login = async (c: Context) => {
     try {
 
-        const { email, password } = await c.req.json()
+        const { email, password } :LoginInput = await c.req.json()
 
         if (!email || !password) {
             return c.json({ message: "All fields are required" }, 400)
@@ -40,10 +42,10 @@ export const login = async (c: any) => {
     }
 }
 
-export const logout = async() => {
+export const logout = async(c:Context) => {
     try {
-        return {message: "Logout Successfully",status: 200}
+        return c.json({message: "Logout Successfully",status: 200})
     } catch (error) {
-        return {message: "Internal Server Error", status: 500}
+        return c.json({message: "Internal Server Error", status: 500})
     }
 }
