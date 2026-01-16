@@ -28,7 +28,7 @@ export const registerUser = async (username: string, email: string, password: st
 
         const token = jwt.sign({id:newUser.id},String(process.env.JWT_SECRET), {expiresIn: "7d"})
 
-        return { message: "User Register Successfully", token }
+        return { message: "User Register Successfully", token ,status:201}
 
     } catch (error) {
         return { message: "Internal Server Error" }
@@ -55,11 +55,11 @@ export const loginUser = async(email:string,password:string) => {
 
         const token = jwt.sign({id:user.id},String(process.env.JWT_SECRET), {expiresIn: "7d"})
 
-        return {message: 'Login Successful',token}
+        return {message: 'Login Successful',token,status:200}
 
 
     } catch (error) {
-        
+        return {message: "Internal Server Error"}
     }
 }
 
