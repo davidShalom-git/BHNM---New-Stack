@@ -22,3 +22,21 @@ export const register = async (c: any) => {
 
 }
 
+export const login = async(c:any) => {
+    try {
+
+        const {email, password} = await c.req.json()
+
+        if(!email || !password) {
+            return c.json({ message: "All fields are required"},400)
+        }
+
+        const sendLoginDetails = await UserDetails.loginUser(email,password)
+
+        return c.json(sendLoginDetails,200)
+
+        
+    } catch (error) {
+        
+    }
+}
