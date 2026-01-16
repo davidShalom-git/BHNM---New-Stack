@@ -1,26 +1,31 @@
-import {Context,Next} from 'hono'
+import { Context, Next } from 'hono'
 import * as jwt from 'jsonwebtoken'
 import { payload } from '../types/auth.details'
 
 
-export const authMiddleware = async(c:Context,next:Next) => {
+export const authMiddleware = async (c: Context, next: Next) => {
     try {
         const authHeader = c.req.header('Authorization')
 
-        if(!authHeader || !authHeader.startsWith('Bearer')) {
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return c.json({
                 message: 'No Token Provided'
-            },400)
+            }, 401)
         }
 
         const token = authHeader.split(' ')[1]
 
-        const decode = jwt.verify(token,process.env.JWT_SECRET as string) as payload
-        c.set('userId',decode.id)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as payload
+
+        c.set('userId', decoded.id)
 
         await next();
-        
+
     } catch (error) {
-        return c.json({message: "Invalid Token and Authentication failed"},500)
+        console.error('Auth Middleware Error:', error)
+        return c.json({
+            success: false,
+            message: 'Authentication failed'
+        }, 500)
     }
 }
