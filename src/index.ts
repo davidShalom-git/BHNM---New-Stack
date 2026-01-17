@@ -1,11 +1,11 @@
 import 'dotenv/config'
 import {Hono} from 'hono'
 import {cors} from 'hono/cors'
-import {PrismaClient} from '@prisma/client'
+import prisma from './lib/prisma'
 import auth from './routers/User'
 
 
-const prisma = new PrismaClient()
+
 
 prisma.$connect().then(()=> {
   console.log('Connected to the Database')

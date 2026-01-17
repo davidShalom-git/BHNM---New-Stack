@@ -26,6 +26,6 @@ export const authMiddleware = async (c: Context, next: Next) => {
         return c.json({
             success: false,
             message: 'Authentication failed'
-        }, 500)
+        }, 401)
     }
 }
