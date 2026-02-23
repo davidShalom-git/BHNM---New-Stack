@@ -1,4 +1,24 @@
-bun create hono@latest edu-smart-api
-cd edu-smart-api
-bun add mongoose jsonwebtoken bcryptjs
-bun run dev
+# 1. Fresh project
+bun init -y
+
+# 2. Install
+# Install Prisma 6
+bun add prisma@6 @prisma/client@6
+
+# Initialize (creates schema.prisma + .env)
+bunx prisma init
+
+# Push schema to database (your main command)
+bunx prisma db push
+
+# Generate client (updates your imports)
+bunx prisma generate
+
+# Development workflow (schema change)
+bunx prisma db push && bunx prisma generate
+
+# Studio (web UI)
+bunx prisma studio
+
+# Check version
+bunx prisma --version

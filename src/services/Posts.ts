@@ -1,29 +1,29 @@
 import prisma from "../lib/prisma";
-import {PostDetailsResponse } from "../types/post.details";
+import { ServiceResult } from "../types/post.details";
 
-export const createPost = async(title:string,content:string,authorId:string,imageUrl?:string): Promise<PostDetailsResponse> => {
-    try{
-        
+export const createPost = async (title: string, content: string, authorId: string, imageUrl?: string): Promise<ServiceResult> => {
+    try {
+
         const newPost = await prisma.post.create({
-            data:{
+            data: {
                 title,
                 content,
                 authorId,
-                image:imageUrl
+                image: imageUrl
             }
         })
 
-        if(!newPost){
+        if (!newPost) {
             throw new Error('Post Creation failed')
         }
 
         return {
             message: 'Post created successfully',
-            status:201
+            status: 201
         }
 
     }
-    catch(error){
+    catch (error) {
         const message = error instanceof Error ? error.message : 'Internal server error';
         return {
             message,
