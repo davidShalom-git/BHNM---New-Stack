@@ -18,8 +18,7 @@ export const createPost = async(c:Context) => {
     if(image){
         try {
             imageUrl = await uploadImage(image)
-            return c.json({message: "Image uploaded to cloudinary"},200)
-            
+           
         } catch (error) {
             console.log(error)
             return c.json({message: "Image failed to upload"},500)
@@ -34,5 +33,21 @@ export const createPost = async(c:Context) => {
         
     } catch (error) {
         return c.json({message: 'Internal Server Error'},500)
+    }
+}
+
+export const getAllPosts = async(c:Context) => {
+    try {
+
+        const getAllPosts = await PostServices.getAllPosts()
+        if(!getAllPosts){
+            return c.json({message: "No Posts have been found"},404)
+        }
+
+        return c.json({message: "Posts Have been fetched Successfully"})
+        
+    } catch (error) {
+        console.log(error)
+        return c.json({message: "Internal Server Error"},500)
     }
 }

@@ -31,3 +31,35 @@ export const createPost = async (title: string, content: string, authorId: strin
         };
     }
 }
+
+export const getAllPosts = async(): Promise<ServiceResult> => {
+    try {
+        const posts = await prisma.post.findMany({
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true
+                    }
+                }
+            }
+        })
+
+        if(!posts){
+            throw new Error("No Posts Have ben found")
+        }
+
+        return {
+            data: posts,
+            message:"Posts fetched successfully",
+            status: 200
+        }
+    } catch (error) {
+        console.log("error")
+        return {
+            message:"Internal Server Error",
+            status: 500
+        }
+    }
+}
