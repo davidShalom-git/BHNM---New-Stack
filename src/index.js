@@ -1,5 +1,5 @@
 import {Hono} from 'hono'
-
+import prisma from './config/db.js'
 
 
 
@@ -11,4 +11,18 @@ app.get('/',(c)=> {
 })
 
 
+
+prisma.$connect().then((res)=> {
+    console.log("Connected to the database successfully")
+}).catch((err)=>{
+    console.error("Failed to connect to the database", err)
+})
+
+
 export default app
+
+
+Bun.serve({
+    fetch: app.fetch,
+    port:1200
+})
