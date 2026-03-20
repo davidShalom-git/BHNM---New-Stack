@@ -8,12 +8,12 @@
     "start": "bun run src/index.js"
   },
   "dependencies": {
-    "@prisma/client": "6",
     "body-parser": "^2.2.2",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
     "hono": "^4.12.5",
     "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.1",
     "prisma": "6"
   }
 }

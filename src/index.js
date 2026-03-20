@@ -1,22 +1,21 @@
+import 'dotenv/config'
+
 import {Hono} from 'hono'
-import prisma from './config/db.js'
+import connectDB from './config/db.js'
 
 
 
 
 const app = new Hono()
 
+connectDB();
+
+
+
 app.get('/',(c)=> {
     return c.text('Hello World')
 })
 
-
-
-prisma.$connect().then((res)=> {
-    console.log("Connected to the database successfully")
-}).catch((err)=>{
-    console.error("Failed to connect to the database", err)
-})
 
 
 export default app
