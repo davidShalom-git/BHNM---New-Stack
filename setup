@@ -1,24 +1,26 @@
-# 1. Fresh project
-bun init -y
+# ─── 1. SETUP (run once) ───────────────────────────
+bun init -y                                        # init project
+bun add prisma@6 @prisma/client@6                  # install Prisma
+bunx prisma init                                   # creates prisma/schema.prisma + .env
 
-# 2. Install
-# Install Prisma 6
-bun add prisma@6 @prisma/client@6
+# ─── 2. .env (add your MongoDB URL) ───────────────
+DATABASE_URL="mongodb+srv://user:pass@cluster.mongodb.net/dbname"
 
-# Initialize (creates schema.prisma + .env)
-bunx prisma init
+# ─── 3. AFTER EDITING schema.prisma ───────────────
+bunx prisma db push                                # push schema → MongoDB
+bunx prisma generate                               # update client imports
 
-# Push schema to database (your main command)
-bunx prisma db push
-
-# Generate client (updates your imports)
-bunx prisma generate
-
-# Development workflow (schema change)
+# shortcut (do both at once)
 bunx prisma db push && bunx prisma generate
 
-# Studio (web UI)
-bunx prisma studio
+# ─── 4. DAILY COMMANDS ────────────────────────────
+bunx prisma studio                                 # open web UI to view data
+bunx prisma --version                              # check version
 
-# Check version
-bunx prisma --version
+# ─── 5. WORKFLOW REMINDER ─────────────────────────
+# Edit schema.prisma  →  db push  →  generate  →  code
+```
+
+**The golden rule:**
+```
+schema change → db push → generate → restart dev server
