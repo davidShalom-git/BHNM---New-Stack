@@ -1,27 +1,27 @@
 import 'dotenv/config'
 
-import {Hono} from 'hono'
+import { Hono } from 'hono'
+import { cors } from 'hono/cors'
+
 import connectDB from './config/db.js'
+
+import todo from './routers/todo.js'
 
 
 
 
 const app = new Hono()
-
+app.use("*", cors())
 connectDB();
 
 
+app.use('/api/todo',todo)
 
-app.get('/',(c)=> {
-    return c.text('Hello World')
-})
+
+
+
+console.log("Server Started")
 
 
 
 export default app
-
-
-Bun.serve({
-    fetch: app.fetch,
-    port:1200
-})

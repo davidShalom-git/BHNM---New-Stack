@@ -5,22 +5,23 @@ import Todo from '../models/Todo.js'
 const router = new Hono()
 
 
-router.post('/',async(c) => {
+router.post('/todo',async(c) => {
     try {
 
         const {title, description} = await c.req.json()
         
         if(!title || !description){
-            return c.json({message: "All Fields are required"},404)
+            return c.json({message: "All Fields are required"},400)
         }
         
         const newTodo = new Todo({
             title,
-            description,
-            completed: false
+            description
         })
 
         await newTodo.save()
+
+        console.log(newTodo)
 
         return c.json({message: "Todo Created Successfully", newTodo},201)
     } catch (error) {
