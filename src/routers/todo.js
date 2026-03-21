@@ -58,3 +58,55 @@ router.get('/get/:id',async(c) => {
     return c.json({message: "Failed to retrieve Todo",error},500)
   }
 })
+
+
+
+router.put('/update/:id',async(c)=> {
+    try {
+
+        const {title,description,completed} = await c.req.json();
+
+        if(!title || !description){
+            return c.json({message: "All fields are required to update the thing"},400)
+        }
+
+        const {id} = c.req.param()
+
+        const updateTodo = await Todo.findByIdAndUpdate(id,{
+            
+            title,
+            description,
+            completed
+        },{new: true})
+
+        if(!updateTodo){
+            return c.json({message: "Todo is not updated or todo is missing"},400)
+        }
+
+        return c.json({message: "Todo is updated"},200)
+
+        
+    } catch (error) {
+        return c.json({message: "Internal Server Error"},500)
+    }
+})
+
+
+router.delete('/delete/:id',async(c)=> {
+    try {
+
+        const {id} = c.req.param()
+
+        const deleteTodo = await Todo.findByIdAndDelete(id);
+        if(!deleteTodo){
+            return c.json({message: "Todo not found to delete"},400)
+        }
+        return c.json({message: 'Todo Deleted Successfully'},200)
+        
+    } catch (error) {
+        return c.json({message: "Internal Server Error"},500)
+    }
+})
+
+
+export default router;
