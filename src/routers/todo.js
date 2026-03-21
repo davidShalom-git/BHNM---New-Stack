@@ -5,7 +5,7 @@ import Todo from '../models/Todo.js'
 const router = new Hono()
 
 
-router.post('/todo',async(c) => {
+router.post('/',async(c) => {
     try {
 
         const {title, description} = await c.req.json()

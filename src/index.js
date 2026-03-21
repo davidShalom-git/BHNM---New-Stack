@@ -7,18 +7,15 @@ import connectDB from './config/db.js'
 
 import todo from './routers/todo.js'
 
-
-
-
 const app = new Hono()
+
+
+
 app.use("*", cors())
 connectDB();
 
 
-app.use('/api/todo',todo)
-
-
-
+app.route('/api/todo',todo)
 
 console.log("Server Started")
 
