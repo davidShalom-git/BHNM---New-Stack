@@ -1,8 +1,8 @@
 import {verify} from 'hono/jwt'
-import {createMiddelware} from 'hono/factory'
+import {createMiddleware} from 'hono/factory'
 
 
-const authMiddleware = createMiddelware(async(c, next)=> {
+const authMiddleware = createMiddleware(async(c, next)=> {
     try {
 
         const authHeader = c.req.header('Authorization')

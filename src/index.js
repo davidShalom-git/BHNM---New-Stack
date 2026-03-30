@@ -15,10 +15,6 @@ app.use("*", cors())
 connectDB();
 
 
-app.route('/',(c)=> {
-    return c.text('Server Running Successfully')
-})
-
 app.route('/api/auth',auth)
 app.route('/api/expense',expense)
 

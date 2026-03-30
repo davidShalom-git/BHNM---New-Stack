@@ -195,3 +195,4 @@ router.delete('/delete/:id', authMiddleware, async (c) => {
 
 
 
+export default router
